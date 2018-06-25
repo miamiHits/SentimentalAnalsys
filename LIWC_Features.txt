@@ -70,4 +70,3 @@ Fillers, idon'tknow, idontknow, imean, ohwell, oranything*, orsomething*, orwhat
 FillersSpaced, i don't know, i dont know, i mean, oh well, or anything*, or something*, or whatever*, rr*, ya know, you know
 
 
-        #hates, hating, hatred, hostil*, humiliat*, insult*, interrup*, intimidat*, jealous*, jerk, jerked, jerks, kill*, liar*, lied, lous*, ludicrous*, mad, molest*, nag*, nast*, obnoxious*, offend*, outrag*, paranoi*, piss*, poison*, prejudic*, punish*, rage*, rape*, rebel*, resent*, revenge*, ridicul*, rude*, sarcas*, screw*, shit*, sinister, skeptical, smother*, snob*, spite*, stubborn*, stupid, suck, sucked, sucking, sucks, suspicious*, teas*, temper, terrified*, terrifying, terror*, threaten*, tick, ticked, torture*, trick*, ugly, vicious*, victim*, violent*, wicked*
