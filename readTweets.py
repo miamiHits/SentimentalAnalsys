@@ -77,7 +77,7 @@ def print_loc(tweetfile, k):
 
 
 def filter_data(tweetfile):
-    result_json = {}
+    result_tweet = {}
     location = 0
     zeros = 0
     ones = 0
@@ -95,7 +95,7 @@ def filter_data(tweetfile):
                 raise RuntimeError('work advertisment')
        	    coord = tweet['geo']['coordinates']
             location = 1
-            result_json['our_location'] = coord
+            result_tweet['our_location'] = coord
         except RuntimeError:
             print 'skip work advertisment tweet'
             skipped += 1
@@ -106,19 +106,19 @@ def filter_data(tweetfile):
                 loc = tweet['user']['location']
                 if str(loc) != 'None': 
                     location = 1
-                    result_json['our_location'] = loc
+                    result_tweet['our_location'] = loc
             except:
                 print 'no user location and no geo coordinates'
         finally:
             try:
-                result_json['text'] = tweet['extended_tweet']['full_text']
+                result_tweet['text'] = tweet['extended_tweet']['full_text']
             except:
-                result_json['text'] = tweet['text']
+                result_tweet['text'] = tweet['text']
             if location == 1:
-                print '[' + str(result_json['our_location']) + ']' + result_json['text']
+                print '[' + str(result_tweet['our_location']) + ']' + result_tweet['text']
                 ones += 1
             else:
-                print result_json['text']
+                print result_tweet['text']
                 zeros += 1
         location = 0
         i += 1
