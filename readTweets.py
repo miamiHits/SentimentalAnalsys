@@ -16,7 +16,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-f', '--file', required=True,
     help = 'name of file with tweets in json format')
 parser.add_argument('-o', '--output', default='text',
-    help = 'type of output to be printed in console', choices=['text', 'geo'])
+    help = 'type of output to be printed in console', choices=['text', 'geo', 'loc', 'filter'])
 parser.add_argument('-k', '--count', default=20, type=int,
     help = 'number of results to display in console')
 args = parser.parse_args()
@@ -57,6 +57,77 @@ def print_geo(tweetfile, k):
         if i == k:
             break
 
+def print_loc(tweetfile, k):
+    i = 1
+    fh = open(tweetfile,'r')
+    for line in fh:
+        try:
+            tweet = json.loads(line)
+        except:
+            continue
+        try:
+            location = tweet['user']['location']
+	    if str(location) != 'None':
+		    print '[' + str(location) + ']: ' + tweet['text']
+        except:
+            continue
+        i += 1
+        if i == k:
+            break
+
+
+def filter_data(tweetfile):
+    result_json = {}
+    location = 0
+    zeros = 0
+    ones = 0
+    skipped = 0
+    i = 1
+    fh = open(tweetfile,'r')
+    # print len(fh) + ' total lines'
+    for line in fh:
+        try:
+            tweet = json.loads(line)
+        except:
+            continue
+        try:
+            if tweet['text'].find('Work') > -1 or tweet['text'].find('Job') > -1 or tweet['text'].find('Hiring') > -1:
+                raise RuntimeError('work advertisment')
+       	    coord = tweet['geo']['coordinates']
+            location = 1
+            result_json['our_location'] = coord
+        except RuntimeError:
+            print 'skip work advertisment tweet'
+            skipped += 1
+            continue
+        except:
+            # print 'dif exception'
+            try:
+                loc = tweet['user']['location']
+                if str(loc) != 'None': 
+                    location = 1
+                    result_json['our_location'] = loc
+            except:
+                print 'no user location and no geo coordinates'
+        finally:
+            try:
+                result_json['text'] = tweet['extended_tweet']['full_text']
+            except:
+                result_json['text'] = tweet['text']
+            if location == 1:
+                print '[' + str(result_json['our_location']) + ']' + result_json['text']
+                ones += 1
+            else:
+                print result_json['text']
+                zeros += 1
+        location = 0
+        i += 1
+        if i % 1000 == 0:
+            print i
+    print 'with location ' + str(ones)
+    print 'without location ' + str(zeros)
+    print 'skipped tweets ' + str(skipped)
+
 
 if output == 'text':
     print_text(tweetfile, k)
@@ -64,5 +135,8 @@ if output == 'text':
 if output == 'geo':
     print_geo(tweetfile, k)
 
-if output != 'text' and output != 'geo':
-    print "Error! Only 'text' or 'geo' options are allowed."
+if output == 'loc':
+    print_loc(tweetfile, k)
+
+if output == 'filter':
+    filter_data(tweetfile)
