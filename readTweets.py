@@ -77,6 +77,8 @@ def print_loc(tweetfile, k):
 
 
 def filter_data(tweetfile):
+    filtered_data=open(tweetfile+'_filtered', 'w+')
+
     result_tweet = {}
     location = 0
     zeros = 0
@@ -91,13 +93,14 @@ def filter_data(tweetfile):
         except:
             continue
         try:
-            if tweet['text'].find('Work') > -1 or tweet['text'].find('Job') > -1 or tweet['text'].find('Hiring') > -1:
+            underlinedTweet = tweet['text'].lower()
+            if underlinedTweet.find('work') > -1 or underlinedTweet.find('job') > -1 or underlinedTweet.find('hiring') > -1:
                 raise RuntimeError('work advertisment')
        	    coord = tweet['geo']['coordinates']
             location = 1
-            result_tweet['our_location'] = coord
+            result_tweet['location'] = coord
         except RuntimeError:
-            print 'skip work advertisment tweet'
+            # print 'skip work advertisment tweet'
             skipped += 1
             continue
         except:
@@ -106,19 +109,21 @@ def filter_data(tweetfile):
                 loc = tweet['user']['location']
                 if str(loc) != 'None': 
                     location = 1
-                    result_tweet['our_location'] = loc
+                    result_tweet['location'] = loc
             except:
-                print 'no user location and no geo coordinates'
+                print 'no location'
         finally:
             try:
                 result_tweet['text'] = tweet['extended_tweet']['full_text']
             except:
                 result_tweet['text'] = tweet['text']
             if location == 1:
-                print '[' + str(result_tweet['our_location']) + ']' + result_tweet['text']
+                # print '[' + str(result_tweet['our_location']) + ']' + result_tweet['text']
+                json.dump(result_tweet, filtered_data)
+                filtered_data.write('\n')
                 ones += 1
             else:
-                print result_tweet['text']
+                # print result_tweet['text']
                 zeros += 1
         location = 0
         i += 1
@@ -127,6 +132,7 @@ def filter_data(tweetfile):
     print 'with location ' + str(ones)
     print 'without location ' + str(zeros)
     print 'skipped tweets ' + str(skipped)
+    filtered_data.close()
 
 
 if output == 'text':
