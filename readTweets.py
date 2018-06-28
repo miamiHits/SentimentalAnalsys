@@ -16,7 +16,11 @@ parser = argparse.ArgumentParser()
 parser.add_argument('-f', '--file', required=True,
     help = 'name of file with tweets in json format')
 parser.add_argument('-o', '--output', default='text',
+<<<<<<< HEAD
+    help = 'type of output to be printed in console', choices=['text', 'geo'])
+=======
     help = 'type of output to be printed in console', choices=['text', 'geo', 'loc', 'filter'])
+>>>>>>> 289d39e9851e01213b620daa0c2d9f98fd07c672
 parser.add_argument('-k', '--count', default=20, type=int,
     help = 'number of results to display in console')
 args = parser.parse_args()
@@ -57,6 +61,8 @@ def print_geo(tweetfile, k):
         if i == k:
             break
 
+<<<<<<< HEAD
+=======
 def print_loc(tweetfile, k):
     i = 1
     fh = open(tweetfile,'r')
@@ -134,6 +140,7 @@ def filter_data(tweetfile):
     print 'skipped tweets ' + str(skipped)
     filtered_data.close()
 
+>>>>>>> 289d39e9851e01213b620daa0c2d9f98fd07c672
 
 if output == 'text':
     print_text(tweetfile, k)
@@ -141,8 +148,13 @@ if output == 'text':
 if output == 'geo':
     print_geo(tweetfile, k)
 
+<<<<<<< HEAD
+if output != 'text' and output != 'geo':
+    print "Error! Only 'text' or 'geo' options are allowed."
+=======
 if output == 'loc':
     print_loc(tweetfile, k)
 
 if output == 'filter':
     filter_data(tweetfile)
+>>>>>>> 289d39e9851e01213b620daa0c2d9f98fd07c672

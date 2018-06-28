@@ -68,3 +68,5 @@ Swear, arse, arses, arsehole*, ass, asses, asshole*, bastard, bitch*, boobs, but
 Nonfl, er, hm*, uh, um, umm*
 Fillers, idon'tknow, idontknow, imean, ohwell, oranything*, orsomething*, orwhatever*, rr*, yaknow, youknow
 FillersSpaced, i don't know, i dont know, i mean, oh well, or anything*, or something*, or whatever*, rr*, ya know, you know
+
+
