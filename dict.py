@@ -3,50 +3,6 @@ from textblob import TextBlob
 import nltk
 import pprint
 
-tokenizer = None
-tagger = None
-
-def init_nltk():
-    global tokenizer
-    global tagger
-    tokenizer = nltk.tokenize.RegexpTokenizer(r'\w+|[^\w\s]+')
-    tagger = nltk.UnigramTagger(nltk.corpus.brown.tagged_sents())
-
-def tag(text):
-    global tokenizer
-    global tagger
-    if not tokenizer:
-        init_nltk()
-    tokenized = tokenizer.tokenize(text)
-    print (tokenized)
-    tagged = tagger.tag(tokenized)
-    tagged.sort(lambda x,y:cmp(x[1],y[1]))
-    return tagged
-
-def end_word_extractor(document):
-    tokens = document.split()
-    first_word, last_word = tokens[0], tokens[-1]
-    feats = {}
-    feats["first({0})".format(first_word)] = True
-    feats["last({0})".format(last_word)] = False
-    return feats
- 
-
-def get_tweet_sentiment(tweet):
-    '''
-    Utility function to classify sentiment of passed tweet
-    using textblob's sentiment method
-    '''
-    # create TextBlob object of passed tweet text
-    analysis = TextBlob(tweet)
-    # set sentiment
-    if analysis.sentiment.polarity > 0:
-        return 'positive'
-    elif analysis.sentiment.polarity == 0:
-        return 'neutral'
-    else:
-        return 'negative'
- 
  
 def main():
 
@@ -171,10 +127,27 @@ def main():
         ('vicious', 'pos'),
         ('victim', 'pos'),
         ('violent', 'pos'),
-        ('wicked', 'pos')
-
+        ('wicked', 'pos'),
+        ('enjoy', 'neg'),
+        ('accepting', 'neg'),
+        ('accept', 'neg'),
+        ('accepta', 'neg'),
+        ('accepted', 'neg'),
+        ('accepts', 'neg'),
+        ('advantage', 'neg'),
+        ('adventur', 'neg'),
+        ('assur', 'neg'),
+        ('award', 'neg'),
+        ('best', 'neg'),
+        ('bold', 'neg'),
+        ('brave', 'neg'),
+        ('bright', 'neg'),
+        ('certain', 'neg'),
+        ('challeng', 'neg'),
+         ('confidence', 'neg'),
+        ('commitment', 'neg'),
+        ('confidently', 'neg')
         ]
-
     test = [
         ('I do enjoy my job', 'neg'),
         ("I feeling good today.", 'neg'),
@@ -184,21 +157,6 @@ def main():
         ]
 
     cl = NaiveBayesClassifier(train)
-
-    print(cl.classify("blam"))
-    print(cl.accuracy(test))
-    #cl.show_informative_features(5)
-    # features = end_word_extractor("abuse happy")
-    # assert features == {'last(happy)': False, 'first(abuse)': True}
-
-    cl2 = NaiveBayesClassifier(train, feature_extractor=end_word_extractor)
-    blob = TextBlob("I'm amazing to try my new classifier.", classifier=cl2)
-    print(blob.classify())
-
-    tag("While you are drinking your coffee this morning this is a good blueprint for what you")
-    print(get_tweet_sentiment("rude"))
-    
-
 
 if __name__ == "__main__":
 # calling main function
